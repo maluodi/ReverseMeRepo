@@ -5,10 +5,10 @@
 - 回调函数开发完成后封装到rvs2dll.dll中
 - 反汇编修改PE文件, 加载rvs2dll.dll,同时将回调函数地址设置为新开发的回调函数
 
-**回调函数的难点在于如何响应按键Z和M? **
+** 回调函数的难点在于如何响应按键Z和M?  **
 因为模态对话框回调函数无法获取到键盘消息.
 
-**思考之后有两种思路可以解决:**
+** 思考之后发现有两种思路可以解决: **
 ## 1.设置钩子获取当前进程键盘消息
 窗口回调函数中, 处理WM_INITDIALOG时
 SetWindowsHookEx(WH_KEYBOARD, KeyboardProc, g_instance, GetCurrentThreadId());
@@ -37,7 +37,7 @@ SetWindowsHookEx(WH_KEYBOARD, KeyboardProc, g_instance, GetCurrentThreadId());
   
 ## VC++代码实现
 详见:https://github.com/maluodi/ReverseMeRepo/tree/master/Rvs2Project
-其中Rvs2Dll是窗口回调函数项目.其中窗口回调函数名是**MyWndProc**.  
+其中Rvs2Dll是窗口回调函数项目.其中窗口回调函数名是** MyWndProc **.  
 所以生成了了Rvs2dll.dll后, 只需要把**MyWndProc**设置为窗口的回调函数即可. 
 
 我想如果要用汇编完成一项功能,不妨先尝试用C/C++语言实现完整功能.  
@@ -51,7 +51,7 @@ SetWindowsHookEx(WH_KEYBOARD, KeyboardProc, g_instance, GetCurrentThreadId());
   004031B0  5F 4D 79 57 6E 64 50 72 6F 63 40 31 36 00 00 00  _MyWndProc@16...  
   ```
   
-  之前定义函数是**MyWndProc**,为什么这里的函数名称是**_MyWndProc@16**?  
+  之前定义函数是** MyWndProc **,为什么这里的函数名称是** _MyWndProc@16 **?  
   这是因为窗口回调函数是stdcall标准,VC++在生成dll时修改了导出函数名.  
   
   所以在通过LoadLibrary/GetProcAddress来调用dll导出函数的时候,不能想当然用自己定义的名称.  
@@ -88,9 +88,9 @@ SetWindowsHookEx(WH_KEYBOARD, KeyboardProc, g_instance, GetCurrentThreadId());
 - 想要用汇编完成一项功能,先尝试用C/C++语言实现
 
 - 动态库和静态库的区别:
--- 静态库是程序在链接的时候就将代码拷贝到exe文件中去了.exe文件可以脱离lib文件运行.  
--- 动态库是程序在运行过程中加载的.exe文件无法离开dll文件单独运行  
--- 动态库中也有lib文件,但是lib文件只有导出的函数声明.  
+  - 静态库是程序在链接的时候就将代码拷贝到exe文件中去了.exe文件可以脱离lib文件运行.  
+  - 动态库是程序在运行过程中加载的.exe文件无法离开dll文件单独运行  
+  - 动态库中也有lib文件,但是lib文件只有导出的函数声明.  
 
 - X64Dbg调试技巧:Shift+C/Shift+V
   可以复制粘贴汇编代码
